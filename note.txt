@@ -7,3 +7,9 @@ vpc-767a780c | default
 vpc , subnet , security group ids are needed 
 
 public subnet 2 subnet-090a9545
+
+
+
+IAM user : capstone 
+access key ID : AKIAY3BU2MWQTYNQ5I5R
+secret access key  : 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
