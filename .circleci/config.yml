@@ -76,7 +76,7 @@ jobs:
               --template-file .circleci/files/EC2.yml \
               --stack-name "uda-people-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  
-                
+                 
               
       - run:
           name: Add back-end ip to ansible inventory
