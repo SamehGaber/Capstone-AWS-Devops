@@ -4,11 +4,11 @@
 
 # Step 1:
 # Build image and add a descriptive tag
-sudo docker build --tag=test .
+sudo docker build --tag=capstone .
 # Step 2: 
 # List docker images
 docker image ls
 # Step 3: 
 # Run flask app
-#sudo docker run -p 8000:80 -it test bash
-sudo docker run -p 8000:80 test 
+#sudo docker run -p 8000:80 -it capstone bash
+sudo docker run -p 8000:80 capstone 

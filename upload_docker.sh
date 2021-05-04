@@ -5,12 +5,12 @@
 
 # Step 1:
 # Create dockerpath
-dockerpath="199420172020/test"
+dockerpath="199420172020/capsone"
 
 # Step 2:  
 # Authenticate & tag
 sudo docker login -u "199420172020" -p samehmahmoudgaber	 &&\
-   sudo docker image tag test $dockerpath
+   sudo docker image tag capstone $dockerpath
 echo "Docker ID and Image: $dockerpath"
 
 # Step 3:
