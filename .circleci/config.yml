@@ -70,6 +70,10 @@ jobs:
     steps:
       - checkout
       - run:
+          name: specify a regions
+          command: |
+            export AWS_REGION=us-west-2
+      - run:
           name: Ensure back-end infrastructure exists
           command: |
             aws cloudformation deploy \
