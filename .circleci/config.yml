@@ -73,18 +73,10 @@ jobs:
           name: Ensure back-end infrastructure exists
           command: |
             aws cloudformation deploy \
-              --template-file .circleci/files/backend.yml \
+              --template-file .circleci/files/EC2.yml \
               --stack-name "uda-people-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  
-              
-      - run:
-          name: Ensure front-end infrastructure exist
-          command: |
-            aws cloudformation deploy \
-              --template-file .circleci/files/frontend.yml \
-              --tags project=uda-people-frontend \
-              --stack-name "uda-people-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
-              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  
+                
               
       - run:
           name: Add back-end ip to ansible inventory
@@ -127,29 +119,9 @@ jobs:
           command: |
             apk add --update ansible 
       - run:
-          name: populating env file
-          command: |
-            pwd
-            echo ENVIRONMENT=production > "backend/.env"
-            echo TYPEORM_CONNECTION=postgres >> "backend/.env"
-            echo TYPEORM_ENTITIES=./src/modules/domain/*/*/*.entity.ts >> "backend/.env"
-            echo TYPEORM_MIGRATIONS=./src/migrations/*.ts >> "backend/.env"
-            echo TYPEORM_MIGRATIONS_DIR=./src/migrations >> "backend/.env"
-            echo NODE_ENV=production >> "backend/.env"
-            echo TYPEORM_HOST=$TYPEORM_HOST >> "backend/.env"
-            echo TYPEORM_PORT=$TYPEORM_PORT >> "backend/.env"
-            echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> "backend/.env"
-            echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> "backend/.env"
-            echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> "backend/.env"
-            cat backend/.env
-      - run:
           name: Configure server
           command: |
             ansible-playbook ~/project/.circleci/ansible/configure-server.yml -i ~/project/.circleci/ansible/inventory.txt 
-      - run:
-          name: configure Node exporter for Prometheus   
-          command: |
-            ansible-playbook ~/project/.circleci/ansible/Node-Exporter.yml -i ~/project/.circleci/ansible/inventory.txt
       # Here's where you will add some code to rollback on failure      
       - destroy-environment:
           WorkflowID: "${CIRCLE_WORKFLOW_ID}"
@@ -224,10 +196,10 @@ workflows:
     jobs:
       - pre-test
 #     - test
-#     - deploy-infrastructure:
-#         requires: [pre-test]
-#     - configure-infrastructure:
-#         requires: [deploy-infrastructure]    #require ,deploy-infrastructure ,test
+      - deploy-infrastructure:
+          requires: [pre-test]
+      - configure-infrastructure:
+          requires: [deploy-infrastructure]    #require ,deploy-infrastructure ,test
 #     - cloudfront-update:
 #        requires: [smoke-test] #smoke-test
 #     - cleanup:
