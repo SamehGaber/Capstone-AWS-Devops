@@ -70,17 +70,13 @@ jobs:
     steps:
       - checkout
       - run:
-          name: specify a regions
-          command: |
-            export AWS_REGION=us-west-2
-      - run:
           name: Ensure back-end infrastructure exists
           command: |
             aws cloudformation deploy \
               --template-file .circleci/files/EC2.yml \
               --stack-name "uda-people-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  \
-              --region us-west-2 
+
                  
               
       - run:
