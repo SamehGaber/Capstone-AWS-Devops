@@ -1,0 +1,9 @@
+ecs IAM role : arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role
+
+EKS : arn:aws:iam::aws:policy/AmazonEKSClusterPolicy
+
+vpc-767a780c | default
+
+vpc , subnet , security group ids are needed 
+
+public subnet 2 subnet-090a9545

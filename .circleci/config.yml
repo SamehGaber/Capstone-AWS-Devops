@@ -1,0 +1,240 @@
+version: 2.1
+
+commands:
+  destroy-environment:
+    description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
+    parameters:
+      WorkflowID:
+        description:
+        type: string
+      # Add parameter here   
+    steps:
+      - run:
+          name: Destroy environments
+          when: on_fail
+          command: |
+            echo "my code <<parameters.WorkflowID>>"
+            aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
+            #aws s3 rm s3://udapeople-20ef7de --recursive
+            aws cloudformation delete-stack --stack-name "uda-people-backend-${CIRCLE_WORKFLOW_ID:0:7}"
+            #aws cloudformation delete-stack --stack-name "uda-people-backend-20ef7de"
+            aws cloudformation delete-stack --stack-name "uda-people-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
+            #aws cloudformation delete-stack --stack-name "uda-people-frontend-20ef7de"
+            #exit 1
+
+            
+jobs:
+  pre-test:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: pre-test
+          command: |
+            echo "pre-test"
+      - destroy-environment:
+          WorkflowID: "${CIRCLE_WORKFLOW_ID}"
+
+  test:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: Add back-end ip to ansible inventory
+          command: |
+            yum -y install tar gzip
+            echo "what !"
+            aws --version
+            aws s3 ls 
+            aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Name,Values=backend-ff86e19" --output text >> ~/project/.circleci/ansible/inventory.txt
+      - run:
+         name: save backend url in memstash
+         command: |
+            BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Name,Values=backend-ff86e19" --output text )
+            echo $BACKEND_IP
+            curl -H "Content-Type: text/plain" -H "token: 0279bc18-c002-44d8-a814-575be01ed402" \
+            --request PUT \
+            --data "http://$BACKEND_IP:3030" \
+            http://api.memstash.io/values/Backend_URL 
+                       
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/.circleci/ansible/inventory.txt
+
+  deploy-infrastructure:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: Ensure back-end infrastructure exists
+          command: |
+            aws cloudformation deploy \
+              --template-file .circleci/files/backend.yml \
+              --stack-name "uda-people-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  
+              
+      - run:
+          name: Ensure front-end infrastructure exist
+          command: |
+            aws cloudformation deploy \
+              --template-file .circleci/files/frontend.yml \
+              --tags project=uda-people-frontend \
+              --stack-name "uda-people-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  
+              
+      - run:
+          name: Add back-end ip to ansible inventory
+          command: |
+            yum -y install tar gzip
+            aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" --output text >> ~/project/.circleci/ansible/inventory.txt
+            echo ${CIRCLE_WORKFLOW_ID:0:7}
+      - run:
+         name: save backend url in memstash
+         command: |
+            BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" --output text )
+            echo $BACKEND_IP
+            curl -H "Content-Type: text/plain" -H "token: 0279bc18-c002-44d8-a814-575be01ed402" \
+            --request PUT \
+            --data "http://$BACKEND_IP:3030" \
+            http://api.memstash.io/values/Backend_URL  
+
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/.circleci/ansible/inventory.txt
+      # Here's where you will add some code to rollback on failure      
+      - destroy-environment:
+          WorkflowID: "${CIRCLE_WORKFLOW_ID}"
+
+  configure-infrastructure:
+    docker:
+      - image: python:3.7-alpine3.11
+
+    steps:
+      - checkout
+      - add_ssh_keys:
+           fingerprints:
+             - "e9:b7:ef:6b:70:b2:56:dc:c8:41:d7:12:6c:b7:a9:7e"    # Add ssh keys with fingerprint #this is "uda-people key"
+      - attach_workspace:       # attach workspace.
+         at: ~/
+      - run: cat ~/project/.circleci/ansible/inventory.txt   
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update ansible 
+      - run:
+          name: populating env file
+          command: |
+            pwd
+            echo ENVIRONMENT=production > "backend/.env"
+            echo TYPEORM_CONNECTION=postgres >> "backend/.env"
+            echo TYPEORM_ENTITIES=./src/modules/domain/*/*/*.entity.ts >> "backend/.env"
+            echo TYPEORM_MIGRATIONS=./src/migrations/*.ts >> "backend/.env"
+            echo TYPEORM_MIGRATIONS_DIR=./src/migrations >> "backend/.env"
+            echo NODE_ENV=production >> "backend/.env"
+            echo TYPEORM_HOST=$TYPEORM_HOST >> "backend/.env"
+            echo TYPEORM_PORT=$TYPEORM_PORT >> "backend/.env"
+            echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> "backend/.env"
+            echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> "backend/.env"
+            echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> "backend/.env"
+            cat backend/.env
+      - run:
+          name: Configure server
+          command: |
+            ansible-playbook ~/project/.circleci/ansible/configure-server.yml -i ~/project/.circleci/ansible/inventory.txt 
+      - run:
+          name: configure Node exporter for Prometheus   
+          command: |
+            ansible-playbook ~/project/.circleci/ansible/Node-Exporter.yml -i ~/project/.circleci/ansible/inventory.txt
+      # Here's where you will add some code to rollback on failure      
+      - destroy-environment:
+          WorkflowID: "${CIRCLE_WORKFLOW_ID}"
+
+   
+  cloudfront-update:
+    docker:
+      - image: amazon/aws-cli #docker image that support aws cli 
+    steps:
+      # Checkout code from git
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            yum -y install tar gzip curl nodejs
+      - run:
+          name: Update cloudfront distribution
+          command: |
+            aws cloudformation deploy --template-file .circleci/files/cloudfront.yml --stack-name "uda-people-cloudfront-${CIRCLE_WORKFLOW_ID:0:7}" --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" 
+            # workflow id to be changed to ${CIRCLE_WORKFLOW_ID} to be the same one used to deploy frontend stack
+      - run:
+         name: save CloudFront workFlow id  in memstash
+         command: |
+            export OldWorkflowID=$(aws cloudformation \
+              list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
+              --no-paginate --output text)
+            curl -H "Content-Type: text/plain" -H "token: 93f3c152-e580-4209-9636-8f4f4dde0d5d" \
+            --request PUT \
+            --data "$OldWorkflowID" \
+            http://api.memstash.io/values/OldWorkflowID
+            echo $OldWorkflowID
+
+      # Here's where you will add some code to rollback on failure  
+      - destroy-environment:
+          WorkflowID: "${CIRCLE_WORKFLOW_ID}" 
+
+  cleanup:
+      docker:
+        - image: amazon/aws-cli #docker image that support aws cli
+      steps:
+        - checkout
+        - run:
+            name: save CloudFront workFlow id  in memstash
+            command: |
+              export OldWorkflowID=$(aws cloudformation \
+                list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
+                --no-paginate --output text)
+              curl -H "Content-Type: text/plain" -H "token: 93f3c152-e580-4209-9636-8f4f4dde0d5d" \
+              --request PUT \
+              --data "$OldWorkflowID" \
+              http://api.memstash.io/values/OldWorkflowID
+              echo $OldWorkflowID
+
+        - run:
+            name: Get old stack workflow id & remove old stacks
+            command: |
+              # your code here
+              export OldWorkflowID=$(curl -H "Content-Type: text/plain" -H "token: 93f3c152-e580-4209-9636-8f4f4dde0d5d" --request GET https://api.memstash.io/values/OldWorkflowID)
+              #export OldWorkflowID="the id here"
+              echo $OldWorkflowID
+              export STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" --stack-status-filter CREATE_COMPLETE --no-paginate --output text))
+              echo $STACKS
+              aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
+              aws s3 rb s3://udapeople-${OldWorkflowID} --force
+              aws cloudformation delete-stack --stack-name uda-people-backend-${OldWorkflowID}
+              aws cloudformation delete-stack --stack-name uda-people-frontend-${OldWorkflowID}
+              echo "stack deleted succesfully"
+
+          
+workflows:
+  default:
+    jobs:
+      - pre-test
+#     - test
+#     - deploy-infrastructure:
+#         requires: [pre-test]
+#     - configure-infrastructure:
+#         requires: [deploy-infrastructure]    #require ,deploy-infrastructure ,test
+#     - cloudfront-update:
+#        requires: [smoke-test] #smoke-test
+#     - cleanup:
+#        requires: [cloudfront-update ]  #cloudfront-update  
+
+
+ 
+
+    
+  
