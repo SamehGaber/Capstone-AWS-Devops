@@ -225,10 +225,10 @@ workflows:
   default:
     jobs:
       - pre-test
-      - lint
+#     - lint
 #     - test
-#     - deploy-infrastructure:
-#         requires: [pre-test]
+      - deploy-infrastructure:
+          requires: [pre-test]
 #     - configure-infrastructure:
 #         requires: [deploy-infrastructure]    #require ,deploy-infrastructure ,test
 #     - cloudfront-update:
