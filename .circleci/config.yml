@@ -104,7 +104,7 @@ jobs:
             aws cloudformation deploy \
               --template-file .circleci/files/EC2.yml \
               --stack-name "uda-people-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
-              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  \
+              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}" 
 
                   
               
