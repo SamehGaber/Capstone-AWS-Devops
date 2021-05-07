@@ -40,16 +40,15 @@ jobs:
       - image: circleci/python:2.7.14
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "requirements.txt" }}
-            - v1-dependencies-
-
       - run:
           name: Docker Build
           command: |
              pwd
-             sudo docker build --tag=capstone .
+             dockerpath="199420172020/capstone"
+             sudo docker login -u "199420172020" -p samehmahmoudgaber	 &&\
+             sudo docker image tag capstone $dockerpath
+             docker build --tag=capstone .
+             sudo docker push $dockerpath
            
       - destroy-environment:
           WorkflowID: "${CIRCLE_WORKFLOW_ID}"
