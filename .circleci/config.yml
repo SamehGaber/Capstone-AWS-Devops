@@ -43,7 +43,7 @@ jobs:
       - run:
           name: virtual env
           command: |
-            python3 -m venv venv
+            python -m venv venv
             . venv/bin/activate
       - run:
           name: Docker Build
