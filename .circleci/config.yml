@@ -44,7 +44,8 @@ jobs:
           name: Docker Build
           command: |
              pwd
-             docker --version
+             sudo systemctl restart docker 
+             sudo systemctl status docker
              dockerpath="199420172020/capstone"
              sudo docker login -u "199420172020" -p samehmahmoudgaber	 &&\
              sudo docker image tag capstone $dockerpath
