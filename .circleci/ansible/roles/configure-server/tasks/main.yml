@@ -15,11 +15,9 @@
   apt:
     autoremove: yes
 
-- name: "install Docker(1)"
+- name: "install Docker"
   become: True
   shell: | 
-      pwd
-      echo "test"
       sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
       curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
       sudo add-apt-repository -y "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic test"
@@ -32,7 +30,9 @@
   shell: | 
       curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
       sudo install minikube-linux-amd64 /usr/local/bin/minikube
-      sudo minikube start --driver=docker
+      sudo usermod -aG docker $USER && newgrp docker
+      minikube start --driver=docker
+      sudo snap install kubectl --classic
 
 
 
