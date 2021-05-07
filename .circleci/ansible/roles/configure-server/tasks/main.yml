@@ -20,13 +20,13 @@
   shell: | 
       pwd
       echo "test"
-      sudo apt install apt-transport-https ca-certificates curl software-properties-common
+      sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
 
 - name: "install Docker(2)"
   become: True
   shell: | 
       curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-      sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic test"
+      sudo add-apt-repository -y "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic test"
 
 - name: "install Docker(3)"
   become: True
