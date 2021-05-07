@@ -21,19 +21,20 @@
       pwd
       echo "test"
       sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
-
-- name: "install Docker(2)"
-  become: True
-  shell: | 
       curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
       sudo add-apt-repository -y "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic test"
-
-- name: "install Docker(3)"
-  become: True
-  shell: | 
       sudo apt update
       sudo apt install -y docker-ce
       docker --version 
+
+- name: "install Kubernetes"
+  become: True
+  shell: | 
+      curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+      sudo install minikube-linux-amd64 /usr/local/bin/minikube
+      sudo minikube start --driver=docker
+
+
 
     
 
