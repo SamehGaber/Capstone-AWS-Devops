@@ -18,6 +18,8 @@
 - name: "install Docker(1)"
   become: True
   shell: | 
+      pwd
+      echo "test"
       sudo apt install apt-transport-https ca-certificates curl software-properties-common
 
 - name: "install Docker(2)"
@@ -25,7 +27,7 @@
   shell: | 
       curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
       sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic test"
-      
+
 - name: "install Docker(3)"
   become: True
   shell: | 
