@@ -44,6 +44,7 @@ jobs:
           name: Docker Build
           command: |
              pwd
+             docker --version
              dockerpath="199420172020/capstone"
              sudo docker login -u "199420172020" -p samehmahmoudgaber	 &&\
              sudo docker image tag capstone $dockerpath
