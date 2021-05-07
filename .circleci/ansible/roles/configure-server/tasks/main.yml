@@ -15,20 +15,16 @@
   apt:
     autoremove: yes
 
-- name: "install dependencies."
-  become: yes
-  apt:
-    name: ["nodejs", "npm"]
-    state: latest
-    update_cache: yes
+- name: "install Docker."
+  become: True
+  shell: | 
+      sudo apt install apt-transport-https ca-certificates curl software-properties-common
+      curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+      sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic test"
+      sudo apt update
+      sudo apt install -y docker-ce
+      docker --version 
 
-- name: "install pm2"
-  become: yes
-  npm:
-    name: pm2
-    global: yes
-    production: yes
-    state: present
     
 
 
