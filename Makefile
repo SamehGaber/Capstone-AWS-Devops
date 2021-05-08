@@ -17,6 +17,9 @@ install:
 	apt-get update &&\
     apt install -y linuxbrew-wrapper &&\
 	brew install hadolint &&\
+	echo 'export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"' >>~/.bash_profile &&\
+	echo 'export MANPATH="/home/linuxbrew/.linuxbrew/share/man:$MANPATH"' >>~/.bash_profile &&\
+	echo 'export INFOPATH="/home/linuxbrew/.linuxbrew/share/info:$INFOPATH"' >>~/.bash_profile &&\
 	wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64 &&\
 	brew install hadolint
 test:
