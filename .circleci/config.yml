@@ -45,7 +45,7 @@ jobs:
       - run:
           name: install docker Client & bash & docker engine& build
           command: |
-           addgroup root docker
+           sudo addgroup root docker
            chmod +x run_docker.sh
            ./run_docker.sh            
            
