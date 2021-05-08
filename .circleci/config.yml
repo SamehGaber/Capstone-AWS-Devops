@@ -42,10 +42,12 @@ jobs:
       - image: circleci/golang:1.15
     steps:
       - checkout
+      - setup_remote_docker:
+          version: 19.03.13
+          docker_layer_caching: true
       - run:
           name: install docker Client & bash & docker engine& build
           command: |
-
            chmod +x run_docker.sh
            ./run_docker.sh            
            
