@@ -38,19 +38,15 @@ jobs:
       - destroy-environment:
           WorkflowID: "${CIRCLE_WORKFLOW_ID}"
   Build:
-    docker:
-      - image: circleci/golang:1.15
+    machine: true
     steps:
       - checkout
-      - setup_remote_docker:
-          version: 19.03.13
       - run:
           name: install docker Client & bash & docker engine& build
           command: |
            sudo groupadd docker
            sudo usermod -aG docker $(whoami)
            chmod +x run_docker.sh
-           -v /var/run/docker.sock:/var/run/docker.sock
            ./run_docker.sh            
            
       - destroy-environment:
