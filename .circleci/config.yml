@@ -44,10 +44,9 @@ jobs:
       - checkout
       - run:
           name: Docker Build
-          command: |
-             pwd
-             ls 
+          command: | 
              chmod +x run_docker.sh
+             sudo systemctl status docker
              ./run_docker.sh
            
       - destroy-environment:
