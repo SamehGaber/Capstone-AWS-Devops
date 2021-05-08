@@ -37,7 +37,7 @@ jobs:
             echo "pre-test"
       - destroy-environment:
           WorkflowID: "${CIRCLE_WORKFLOW_ID}"
-  Docker:
+  Build:
     docker:
       - image: circleci/golang:1.15
       - checkout
@@ -240,7 +240,7 @@ workflows:
   default:
     jobs:
 #     - pre-test
-      - Docker
+      - Build
 #     - lint
 #     - test
 #     - deploy-infrastructure:
