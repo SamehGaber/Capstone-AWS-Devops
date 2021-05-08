@@ -45,9 +45,7 @@ jobs:
       - run:
           name: install docker Client & bash & docker engine& build
           command: |
-           sudo groupadd docker
-           sudo usermod -aG docker $(whoami)
-           sudo service docker start
+
            chmod +x run_docker.sh
            ./run_docker.sh            
            
