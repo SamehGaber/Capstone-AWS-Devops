@@ -14,8 +14,8 @@ install:
 	# This should be run from inside a virtualenv
 	pip install --upgrade pip &&\
 		pip install  -r requirements.txt &&\
-	sudo apt-get update &&\
-    sudo apt install linuxbrew-wrapper &&\
+	apt-get update &&\
+    apt install linuxbrew-wrapper &&\
 	brew install hadolint &&\
 	wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64 &&\
 	brew install hadolint
