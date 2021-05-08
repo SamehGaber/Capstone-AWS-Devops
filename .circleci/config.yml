@@ -246,8 +246,8 @@ workflows:
   default:
     jobs:
 #     - pre-test
-#     - Docker
-      - lint
+      - Docker
+#     - lint
 #     - test
 #     - deploy-infrastructure:
 #         requires: [pre-test]
