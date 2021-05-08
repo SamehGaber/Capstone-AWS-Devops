@@ -47,7 +47,7 @@ jobs:
           command: |
            apk add docker-cli
            apk update && apk add bash
-           rc-update add docker boot
+           apk add --update --no-cache docker
            service docker start
       - run:
           name: Docker Build
