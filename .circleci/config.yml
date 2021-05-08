@@ -43,19 +43,14 @@ jobs:
     steps:
       - checkout
       - run:
-          name: install docker Client & bash & docker engine
+          name: install docker Client & bash & docker engine& build
           command: |
            apk add docker-cli
            apk update && apk add bash
            apk add --update --no-cache docker
            addgroup root docker
-      - run:
-          name: Docker Build
-          command: | 
-             chmod +x run_docker.sh
-             docker --version
-             ls -lrth
-             ./run_docker.sh
+           chmod +x run_docker.sh
+           ./run_docker.sh            
            
       - destroy-environment:
           WorkflowID: "${CIRCLE_WORKFLOW_ID}"
