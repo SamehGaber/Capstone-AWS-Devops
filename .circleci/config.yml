@@ -48,9 +48,7 @@ jobs:
            apk add docker-cli
            apk update && apk add bash
            apk add --update --no-cache docker
-           whoami
            addgroup root docker
-           rc-update add docker boot
            service docker start
       - run:
           name: Docker Build
