@@ -11,4 +11,4 @@ docker image ls
 # Step 3: 
 # Run flask app
 #sudo docker run -p 8000:80 -it capstone bash
-sudo docker run -p 8000:80 capstone 
+sudo docker run -d -p 8000:80 capstone 
