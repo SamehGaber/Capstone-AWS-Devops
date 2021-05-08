@@ -43,10 +43,12 @@ jobs:
     steps:
       - checkout
       - run:
-          name: install docker engine
+          name: install docker Client & bash & docker engine
           command: |
            apk add docker-cli
            apk update && apk add bash
+           rc-update add docker boot
+           service docker start
       - run:
           name: Docker Build
           command: | 
