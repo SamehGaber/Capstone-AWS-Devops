@@ -50,7 +50,6 @@ jobs:
           command: | 
              chmod +x run_docker.sh
              docker --version 
-             systemctl status docker
              ./run_docker.sh
            
       - destroy-environment:
