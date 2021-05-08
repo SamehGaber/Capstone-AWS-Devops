@@ -47,11 +47,7 @@ jobs:
           command: |
              pwd
              ls 
-             dockerpath="199420172020/capstone"
-             sudo docker login -u "199420172020" -p samehmahmoudgaber	 &&\
-             sudo docker image tag capstone $dockerpath
-             docker build --tag=capstone .
-             sudo docker push $dockerpath
+             sudo ./run_docker.sh
            
       - destroy-environment:
           WorkflowID: "${CIRCLE_WORKFLOW_ID}"
