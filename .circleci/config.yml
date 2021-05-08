@@ -47,7 +47,8 @@ jobs:
           command: |
              pwd
              ls 
-             sudo ./run_docker.sh
+             chmod +x run_docker.sh
+             ./run_docker.sh
            
       - destroy-environment:
           WorkflowID: "${CIRCLE_WORKFLOW_ID}"
