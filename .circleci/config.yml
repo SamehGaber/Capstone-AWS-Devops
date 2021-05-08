@@ -44,12 +44,15 @@ jobs:
       - checkout
       - run:
           name: install docker engine
-          command: apk add docker-cli
+          command: |
+           apk add docker-cli
+           apk update && apk add bash
       - run:
           name: Docker Build
           command: | 
              chmod +x run_docker.sh
-             docker --version 
+             docker --version
+             ls -lrth
              ./run_docker.sh
            
       - destroy-environment:
