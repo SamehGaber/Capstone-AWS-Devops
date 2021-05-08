@@ -49,7 +49,7 @@ jobs:
           command: |
            sudo groupadd docker
            sudo usermod -aG docker $(whoami)
-           sudo service docker start
+           sudo systemctl status docker
            chmod +x run_docker.sh
            ./run_docker.sh            
            
