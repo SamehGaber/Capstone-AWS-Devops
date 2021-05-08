@@ -49,7 +49,6 @@ jobs:
            apk update && apk add bash
            apk add --update --no-cache docker
            addgroup root docker
-           service docker start
       - run:
           name: Docker Build
           command: | 
