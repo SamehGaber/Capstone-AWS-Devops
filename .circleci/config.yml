@@ -39,15 +39,14 @@ jobs:
           WorkflowID: "${CIRCLE_WORKFLOW_ID}"
   Docker:
     docker:
-      - image: circleci/python:2.7.14
+      - image: circleci/python:3.7.3-stretch
     steps:
       - checkout
       - run:
           name: Docker Build
           command: |
              pwd
-             sudo systemctl restart docker 
-             sudo systemctl status docker
+             ls 
              dockerpath="199420172020/capstone"
              sudo docker login -u "199420172020" -p samehmahmoudgaber	 &&\
              sudo docker image tag capstone $dockerpath
