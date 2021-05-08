@@ -16,7 +16,7 @@ install:
 		pip install  -r requirements.txt &&\
 	apt-get update &&\
     apt install -y linuxbrew-wrapper &&\
-	apt install libpcap-dev &&\
+	apt install -y libpcap-dev &&\
 	brew install hadolint &&\
 	echo 'export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"' >>~/.bash_profile &&\
 	echo 'export MANPATH="/home/linuxbrew/.linuxbrew/share/man:$MANPATH"' >>~/.bash_profile &&\
