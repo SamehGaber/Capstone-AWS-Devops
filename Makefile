@@ -16,7 +16,7 @@ install:
 		pip install  -r requirements.txt &&\
 	apt-get update &&\
     apt install -y linuxbrew-wrapper &&\
-	brew install hadolint &&\
+	sudo brew install hadolint &&\
 	wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64 &&\
 	brew install hadolint
 test:
