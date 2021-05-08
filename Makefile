@@ -4,7 +4,7 @@
 # Dockerfile should pass hadolint
 # app.py should pass pylint
 # (Optional) Build a simple integration test
-
+# under install section , sudo apt install linuxbrew-wrapper
 setup:
 	# Create python virtualenv & source it
 	# source ~/.devops/bin/activate
@@ -14,7 +14,7 @@ install:
 	# This should be run from inside a virtualenv
 	pip install --upgrade pip &&\
 		pip install  -r requirements.txt &&\
-    sudo apt install linuxbrew-wrapper &&\
+    apt install linuxbrew-wrapper &&\
 	brew install hadolint &&\
 	wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.16.3/hadolint-Linux-x86_64 &&\
 	brew install hadolint
