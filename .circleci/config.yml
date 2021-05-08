@@ -49,8 +49,8 @@ jobs:
           command: |
            sudo groupadd docker
            sudo usermod -aG docker $(whoami)
-           sudo systemctl status docker
            chmod +x run_docker.sh
+           -v /var/run/docker.sock:/var/run/docker.sock
            ./run_docker.sh            
            
       - destroy-environment:
