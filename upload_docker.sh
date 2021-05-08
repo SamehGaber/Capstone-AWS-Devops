@@ -5,7 +5,7 @@
 
 # Step 1:
 # Create dockerpath
-dockerpath="199420172020/capsone"
+dockerpath="199420172020/capstone"
 
 # Step 2:  
 # Authenticate & tag
