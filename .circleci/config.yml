@@ -40,6 +40,7 @@ jobs:
   Build:
     docker:
       - image: circleci/golang:1.15
+    steps:
       - checkout
       - run:
           name: install docker Client & bash & docker engine& build
