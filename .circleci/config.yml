@@ -39,9 +39,12 @@ jobs:
           WorkflowID: "${CIRCLE_WORKFLOW_ID}"
   Docker:
     docker:
-      - image: circleci/python:3.7.3-stretch
+      - image: python:3.7-alpine3.11
     steps:
       - checkout
+      - run:
+          name: install docker engine
+          command: apk add docker-cli
       - run:
           name: Docker Build
           command: | 
