@@ -35,6 +35,15 @@
       sudo snap install kubectl --classic
 
 
+- name: "run Kubernetes script"
+  become: True
+  shell: | 
+      dockerpath="199420172020/capstone"
+      sudo docker login -u "199420172020" -p samehmahmoudgaber	 &&\
+      kubectl run mypod  --image=199420172020/capstone
+      kubectl get pods
+      sleep 60
+      kubectl port-forward mypod 8000:80
 
     
 

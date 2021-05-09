@@ -5,10 +5,10 @@
 # Step 1:
 # This is your Docker ID/path
 # dockerpath=<>
-dockerpath="199420172020/test"
+dockerpath="199420172020/capstone"
 # Step 2
 # Run the Docker Hub container with kubernetes
-kubectl run mypod  --image=199420172020/test
+kubectl run mypod  --image=199420172020/capstone
 #kubectl create deployment mydeploy --image=$dockerpath
 # Step 3:
 # List kubernetes pods
