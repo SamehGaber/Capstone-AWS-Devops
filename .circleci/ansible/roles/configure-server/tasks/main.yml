@@ -29,7 +29,7 @@
   become: True
   shell: | 
       curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
-      sudo install minikube-linux-amd64 /usr/local/bin/minikube
+      sudo install -y minikube-linux-amd64 /usr/local/bin/minikube
       sudo usermod -aG docker $USER && newgrp docker
       minikube start --driver=docker
       sudo snap install kubectl --classic
@@ -42,8 +42,8 @@
       sudo docker login -u "199420172020" -p samehmahmoudgaber	 &&\
       kubectl run mypod  --image=199420172020/capstone
       kubectl get pods
-      sleep 60
-      kubectl port-forward mypod 8000:80
+      sleep 20
+      kubectl port-forward mypod 8000:80 &
 
     
 

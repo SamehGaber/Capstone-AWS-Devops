@@ -245,9 +245,9 @@ workflows:
   default:
     jobs:
 #     - pre-test
-      - lint
-      - Build:
-         requires: [lint]     
+#     - lint
+#     - Build:
+#        requires: [lint]     
 #     - test
       - deploy-infrastructure:
           requires: [Build]
