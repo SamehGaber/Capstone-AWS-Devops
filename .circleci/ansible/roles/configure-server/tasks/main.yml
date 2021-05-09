@@ -27,7 +27,6 @@
 
 
 - name: "run Kubernetes script"
-  become: True
   shell: | 
       dockerpath="199420172020/capstone"
       sudo docker login -u "199420172020" -p samehmahmoudgaber	 &&\
