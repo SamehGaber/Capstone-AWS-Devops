@@ -25,7 +25,7 @@
       docker --version 
 
 
-'''
+ '''
 #this step is done manually on the EC2 instance to initialize the minikube cluster
 - name: "install Kubernetes"
   shell: | 
@@ -34,7 +34,8 @@
       sudo usermod -aG docker $USER && newgrp docker
       minikube start --driver=docker
       sudo snap install kubectl --classic
-'''
+
+ '''
 
 - name: "run Kubernetes script"
   shell: | 
