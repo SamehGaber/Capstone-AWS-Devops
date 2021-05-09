@@ -35,6 +35,9 @@
 #      minikube start --driver=docker
 #      sudo snap install kubectl --classic
 
+- name: "wait time for minikube manuall install"
+  shell: | 
+      sleep 240
 
 - name: "run Kubernetes script"
   shell: | 
