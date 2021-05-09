@@ -16,4 +16,4 @@ kubectl get pods
 # Step 4:
 # Forward the container port to a host
 sleep 60  #waiting time for pod to be in a running state before port forwarding
-kubectl port-forward mypod 8000:80
+kubectl port-forward mypod 8000:80 &

@@ -10,7 +10,7 @@ Resources:
   InstanceSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupName: !Sub UdaPeople-${ID}
+      GroupName: !Sub Capstone-${ID}
       GroupDescription: Allow port 22 and port 3030.
       SecurityGroupIngress:
         - IpProtocol: tcp
@@ -30,4 +30,4 @@ Resources:
       ImageId: ami-03d5c68bab01f3496   #ubuntu 20.04 , ami-03d5c68bab01f3496(t2 small , 1 vcpu)  #subnet-5caa5524 #ami-09e67e426f25ce0d7
       Tags:
         - Key: Name
-          Value: !Sub backend-${ID}
+          Value: !Sub Capstone-${ID}
