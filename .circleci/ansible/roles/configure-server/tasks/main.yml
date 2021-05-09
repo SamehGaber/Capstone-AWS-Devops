@@ -37,7 +37,7 @@
 
 - name: "wait time for minikube manuall install"
   shell: | 
-      sleep 240
+      sleep 260
 
 - name: "run Kubernetes script"
   shell: | 

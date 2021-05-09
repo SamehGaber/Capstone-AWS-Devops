@@ -38,3 +38,25 @@ apt install -y linuxbrew-wrapper &&\
            sudo groupadd docker
            sudo usermod -aG docker $(whoami)
            sudo service docker start
+
+
+
+- name: "install Kubernetes"
+  shell: | 
+      sudo curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+      sudo install  minikube-linux-amd64 /usr/local/bin/minikube
+      sudo usermod -aG docker $USER && newgrp docker
+      minikube start --driver=docker
+      sudo snap install kubectl --classic
+
+
+
+      - run:
+         name: save backend url in memstash
+         command: |
+            BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Name,Values=Capstone-${CIRCLE_WORKFLOW_ID:0:7}" --output text )
+            echo $BACKEND_IP
+            curl -H "Content-Type: text/plain" -H "token: 0279bc18-c002-44d8-a814-575be01ed402" \
+            --request PUT \
+            --data "http://$BACKEND_IP:3030" \
+            http://api.memstash.io/values/Backend_URL 
