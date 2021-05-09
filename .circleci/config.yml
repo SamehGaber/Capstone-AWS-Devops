@@ -96,11 +96,11 @@ jobs:
             aws --version
             aws s3 ls 
             echo "[web]" > ~/project/.circleci/ansible/inventory.txt
-            aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Name,Values=backend-f7030d9" --output text >> ~/project/.circleci/ansible/inventory.txt
+            aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Name,Values=Capstone-f7030d9" --output text >> ~/project/.circleci/ansible/inventory.txt
       - run:
          name: save backend url in memstash
          command: |
-            BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Name,Values=backend-f7030d9" --output text )
+            BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Name,Values=Capstone-f7030d9" --output text )
             echo $BACKEND_IP
             curl -H "Content-Type: text/plain" -H "token: 0279bc18-c002-44d8-a814-575be01ed402" \
             --request PUT \
@@ -132,12 +132,12 @@ jobs:
           command: |
             yum -y install tar gzip
             echo "[web]" > ~/project/.circleci/ansible/inventory.txt
-            aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" --output text >> ~/project/.circleci/ansible/inventory.txt
+            aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Name,Values=Capstone-${CIRCLE_WORKFLOW_ID:0:7}" --output text >> ~/project/.circleci/ansible/inventory.txt
             echo ${CIRCLE_WORKFLOW_ID:0:7}
       - run:
          name: save backend url in memstash
          command: |
-            BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" --output text )
+            BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:Name,Values=Capstone-${CIRCLE_WORKFLOW_ID:0:7}" --output text )
             echo $BACKEND_IP
             curl -H "Content-Type: text/plain" -H "token: 0279bc18-c002-44d8-a814-575be01ed402" \
             --request PUT \
