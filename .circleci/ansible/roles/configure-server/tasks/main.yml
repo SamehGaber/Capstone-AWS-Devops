@@ -24,6 +24,9 @@
       sudo apt install -y docker-ce
       docker --version 
 
+
+'''
+#this step is done manually on the EC2 instance to initialize the minikube cluster
 - name: "install Kubernetes"
   shell: | 
       sudo curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
@@ -31,7 +34,8 @@
       sudo usermod -aG docker $USER && newgrp docker
       minikube start --driver=docker
       sudo snap install kubectl --classic
-      
+'''
+
 - name: "run Kubernetes script"
   shell: | 
       dockerpath="199420172020/capstone"
