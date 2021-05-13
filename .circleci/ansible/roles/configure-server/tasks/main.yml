@@ -38,11 +38,11 @@
 - name: "wait time for minikube manuall install"
   shell: | 
       sleep 260
-
+#replace -p ****** with dockerhub pass
 - name: "run Kubernetes script"
   shell: | 
       dockerpath="199420172020/capstone"
-      sudo docker login -u "199420172020" -p samehmahmoudgaber	 &&\
+      sudo docker login -u "199420172020" -p **********	 &&\
       kubectl run mypod  --image=199420172020/capstone
       kubectl get pods
       sleep 20

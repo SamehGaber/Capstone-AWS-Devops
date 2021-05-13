@@ -8,8 +8,8 @@
 dockerpath="199420172020/capstone"
 
 # Step 2:  
-# Authenticate & tag
-sudo docker login -u "199420172020" -p samehmahmoudgaber	 &&\
+# Authenticate & tag  #replace the ***** with dockerhub acc pass
+sudo docker login -u "199420172020" -p ***********	 &&\
    sudo docker image tag capstone $dockerpath
 echo "Docker ID and Image: $dockerpath"
 

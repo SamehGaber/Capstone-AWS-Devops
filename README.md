@@ -18,3 +18,10 @@ Runing services instructions:
 - Run make install to install dependencies definred in requirements.txt 
 - Run lint : make lint 
 - to build and upload docker image : run_docker.sh / upload_docker.sh 
+
+
+
+URLs: 
+
+Circle CI URL : https://app.circleci.com/pipelines/github/SamehGaber/Capstone-AWS-Devops?branch=master 
+GitHub URL : https://github.com/SamehGaber/Capstone-AWS-Devops
